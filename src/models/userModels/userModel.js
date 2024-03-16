@@ -1,4 +1,5 @@
 import { DataTypes, Sequelize } from 'sequelize'
+import bcrypt from 'bcrypt'
 
 export default (sequelize) => {
   const User = sequelize.define(
@@ -21,16 +22,29 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          isEmail: true,
+        },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        set(value) {
+          // Use bcrypt.hash asynchronously
+          bcrypt.hash(value, 10, (err, hash) => {
+            if (err) {
+              console.error('Error hashing password:', err)
+              throw err
+            }
+            this.setDataValue('password', hash)
+          })
+        },
       },
       type: {
         type: DataTypes.ENUM('client', 'guest'),
         allowNull: false,
       },
-      clientId: {
+      userId: {
         type: DataTypes.UUID,
         allowNull: true,
         references: {
@@ -45,8 +59,8 @@ export default (sequelize) => {
   )
 
   User.associate = (models) => {
-    User.hasMany(models.User, { as: 'guests', foreignKey: 'clientId' })
-    User.belongsTo(models.User, { as: 'client', foreignKey: 'clientId' })
+    User.hasMany(models.User, { as: 'guest', foreignKey: 'userId' })
+    User.belongsTo(models.User, { as: 'client', foreignKey: 'userId' })
   }
 
   return User

@@ -1,13 +1,11 @@
 import mongoose from 'mongoose'
-import pkg from 'joi'
 import { optionSchema } from './optionSchema'
 import { linkSchema } from './linkSchema'
 import { feedbackSchema } from './feedbackSchema'
 
 const { Schema, model } = mongoose
-const { object, string, number, array } = pkg
 
-const baseQuestionSchema = new Schema(
+const questionSchema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -29,33 +27,6 @@ const baseQuestionSchema = new Schema(
   { timestamps: true }
 )
 
-const questionValidationSchema = object({
-  title: string().required(),
-  description: string().required(),
-  type: string()
-    .valid('no_code', 'code_in_description', 'code_in_options', 'match')
-    .required(),
-  tags: array().items(string()),
-  timeEstimation: number().min(1).max(10).required(),
-  feedback: object({
-    title: string().required(),
-    text: string().required(),
-  }),
-  recommendedLinks: array().items(
-    object({
-      title: string().required(),
-      url: string().uri().required(),
-    })
-  ),
-  options: array().items(
-    object({
-      text: string().required(),
-      correct: boolean().required(),
-    })
-  ),
-  details: object().unknown(true),
-})
+const Question = model('Question', questionSchema)
 
-const Question = model('Question', baseQuestionSchema)
-
-export { Question, questionValidationSchema }
+export default Question

@@ -7,9 +7,4 @@ const feedbackSchema = new Schema({
   text: { type: String, required: true },
 })
 
-const feedbackValidationSchema = object({
-  title: string().required(),
-  text: string().required(),
-})
-
-export { feedbackSchema, feedbackValidationSchema }
+export default feedbackSchema
