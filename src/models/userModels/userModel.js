@@ -29,16 +29,6 @@ export default (sequelize) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false,
-        set(value) {
-          // Use bcrypt.hash asynchronously
-          bcrypt.hash(value, 10, (err, hash) => {
-            if (err) {
-              console.error('Error hashing password:', err)
-              throw err
-            }
-            this.setDataValue('password', hash)
-          })
-        },
       },
       type: {
         type: DataTypes.ENUM('client', 'guest'),
@@ -57,6 +47,18 @@ export default (sequelize) => {
       timestamps: true,
     }
   )
+
+  User.beforeCreate(async (user, options) => {
+    const hashedPassword = await bcrypt.hash(user.password, 10)
+    user.password = hashedPassword
+  })
+
+  User.beforeUpdate(async (user, options) => {
+    if (user.changed('password')) {
+      const hashedPassword = await bcrypt.hash(user.password, 10)
+      user.password = hashedPassword
+    }
+  })
 
   User.associate = (models) => {
     User.hasMany(models.User, { as: 'guest', foreignKey: 'userId' })
