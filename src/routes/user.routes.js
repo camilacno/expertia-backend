@@ -1,24 +1,23 @@
 import express from 'express'
 import { celebrate, errors } from 'celebrate'
 import userController from '../controllers/user.controller.js'
-import userValidationSchema from '../validations/userValidations/userValidation.js'
-import passwordValidationSchema from '../validations/userValidations/passwordValidation.js'
+import userValidations from '../validations/user.validations.js'
 
 const userRouter = express.Router()
 
 userRouter.post(
   '/',
-  celebrate({ body: userValidationSchema }),
+  celebrate({ body: userValidations.createUserSchema }),
   userController.createUser
 )
 userRouter.put(
   '/:id',
-  celebrate({ body: userValidationSchema }),
+  celebrate({ body: userValidations.editUserSchema }),
   userController.updateUser
 )
 userRouter.put(
   '/:id/change-password',
-  celebrate({ body: passwordValidationSchema }),
+  celebrate({ body: changePasswordSchema }),
   userController.updatePassword
 )
 userRouter.delete('/:id', userController.deleteUser)
