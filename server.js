@@ -2,9 +2,13 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import winston from 'winston'
+import swaggerUI from 'swagger-ui-express'
+import swaggerSpec from './src/config/swaggerConfig.js'
 
 dotenv.config()
 const app = express()
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
 
 const corsOptions = {
   origin: (origin, callback) => {

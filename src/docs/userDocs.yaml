@@ -1,0 +1,137 @@
+/users:
+  get:
+    summary: Returns all users
+    responses:
+      200:
+        description: List with all users
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './schemas/UserSchema.yaml#/components/schemas/User'
+      500:
+        description: Internal server error
+
+  post:
+    summary: Creates a new user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/UserSchema.yaml#/components/schemas/User'
+          example: # Exemplo específico para a solicitação
+            firstName: 'Jane'
+            lastName: 'Doe'
+            email: 'jane.doe@example.com'
+            password: 'Password123!'
+            type: 'client'
+    responses:
+      201:
+        description: User successfully created
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/UserSchema.yaml#/components/schemas/User'
+      400:
+        description: Bad request due to invalid input format
+      500:
+        description: Internal server error
+
+/users/{id}:
+  put:
+    summary: Update existing user
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The user's unique identifier
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/UserSchema.yaml#/components/schemas/User'
+          example:
+            firstName: 'Jane'
+            lastName: 'Smith' # Assuming the user is changing their last name
+    responses:
+      200:
+        description: User successfully updated
+      404:
+        description: User not found
+      400:
+        description: Bad request due to invalid input format
+      500:
+        description: Internal server error
+
+  delete:
+    summary: Deletes a user
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The user's unique identifier
+        schema:
+          type: string
+    responses:
+      200:
+        description: User successfully deleted
+      404:
+        description: User not found
+      500:
+        description: Internal server error
+
+/users/{id}/change-password:
+  put:
+    summary: Updates user password
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: User's unique identifier
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                format: password
+                example: 'newPassword1!'
+    responses:
+      200:
+        description: Password successfully updated
+      400:
+        description: Bad request due to invalid password format
+      500:
+        description: Internal server error
+
+/users/email/{email}:
+  get:
+    summary: Returns user by email if exists. If the user is disabled, the API will return an appropriate message.
+    parameters:
+      - in: path
+        name: email
+        required: true
+        description: User's email address
+        schema:
+          type: string
+    responses:
+      200:
+        description: User found
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/UserSchema.yaml#/components/schemas/User'
+      404:
+        description: User not found
+      500:
+        description: Internal server error

@@ -1,0 +1,31 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        firstName:
+          type: string
+          example: 'John'
+        lastName:
+          type: string
+          example: 'Doe'
+        email:
+          type: string
+          format: email
+          example: 'john.doe@example.com'
+        password:
+          type: string
+          format: password
+          example: 'Password1!'
+        type:
+          type: string
+          enum: ['client', 'guest']
+        userId:
+          type: string
+          format: uuid
+          nullable: true
+          example: '123e4567-e89b-12d3-a456-426614174000'
