@@ -5,6 +5,13 @@ import userValidations from '../validations/user.validations.js'
 
 const userRouter = express.Router()
 
+// TODO: improve logic / structure to validate UUID
+const validateUUID = celebrate({
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().guid({ version: 'uuidv4' }).required(),
+  }),
+})
+
 userRouter.post(
   '/',
   celebrate({ body: userValidations.createUserSchema }),
@@ -20,9 +27,9 @@ userRouter.put(
   celebrate({ body: changePasswordSchema }),
   userController.updatePassword
 )
-userRouter.delete('/:id', userController.deleteUser)
+userRouter.delete('/:id', validateUUID, userController.deleteUser)
 userRouter.get('/', userController.getUsers)
-userRouter.get('/:id', userController.getUserById)
+userRouter.get('/:id', validateUUID, userController.getUserById)
 userRouter.get('/email/:email', userController.getUserByEmail)
 
 userRouter.use(errors())

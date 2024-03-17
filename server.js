@@ -23,6 +23,7 @@ const logsFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} [${label}] ${level}: ${message}`
 })
 
+// TODO: Create a logger instance for each module to log separately
 global.logger = winston.createLogger({
   level: 'silly',
   transports: [
