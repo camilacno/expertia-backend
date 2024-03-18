@@ -1,6 +1,6 @@
 import express from 'express'
 import { celebrate, errors } from 'celebrate'
-import userController from '../controllers/user.controller.js'
+import userController from '../../controllers/user.controller.js'
 import userValidations from '../validations/user.validations.js'
 
 const userRouter = express.Router()

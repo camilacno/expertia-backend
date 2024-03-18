@@ -9,6 +9,7 @@ export default (sequelize, models) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      title: { type: DataTypes.STRING, allowNull: false },
       ownerId: {
         type: DataTypes.UUID,
         allowNull: false,

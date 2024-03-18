@@ -17,6 +17,10 @@ export default (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      tooltip: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       timestamps: true,

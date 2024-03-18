@@ -11,6 +11,7 @@ export default (sequelize) => {
       },
       name: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.STRING, allowNull: false },
+      tooltip: { type: DataTypes.STRING, allowNull: false },
       languageId: {
         type: DataTypes.UUID,
         references: { model: 'Language', key: 'id' },
