@@ -29,27 +29,37 @@ export default (sequelize, models) => {
       frameworks: { type: DataTypes.ARRAY(DataTypes.STRING) },
       libsAndTools: { type: DataTypes.ARRAY(DataTypes.STRING) },
     },
-    { timestamps: true }
+    {
+      timestamps: true,
+    }
   )
 
-  Quizz.associate = (models) => {
-    Quizz.belongsTo(models.User, { as: 'owner', foreignKey: 'ownerId' })
-    Quizz.belongsTo(models.Level, { as: 'level', foreignKey: 'levelId' })
-    Quizz.belongsTo(models.SpecializationArea, {
-      as: 'specializationArea',
-      foreignKey: 'specializationAreaId',
-    })
-    Quizz.belongsToMany(models.Theme, {
-      through: 'QuizzThemes',
-      foreignKey: 'quizzId',
-      otherKey: 'themeId',
-    })
-    Quizz.belongsToMany(models.Question, {
-      through: 'QuizzQuestions',
-      foreignKey: 'quizzId',
-      otherKey: 'questionId',
-    })
-  }
+  Quizz.belongsTo(models.User, { as: 'owner', foreignKey: 'ownerId' })
+  Quizz.belongsTo(models.Level, { as: 'level', foreignKey: 'levelId' })
+  Quizz.belongsTo(models.SpecializationArea, {
+    as: 'specializationArea',
+    foreignKey: 'specializationAreaId',
+  })
+  Quizz.belongsToMany(models.Question, {
+    through: 'QuizzQuestions',
+    foreignKey: 'quizzId',
+    otherKey: 'questionId',
+  })
+  Quizz.belongsToMany(models.Language, {
+    through: QuizzLanguage,
+    foreignKey: 'quizzId',
+    otherKey: 'languageId',
+  })
+  Quizz.belongsToMany(models.Framework, {
+    through: QuizzFramework,
+    foreignKey: 'quizzId',
+    otherKey: 'frameworkId',
+  })
+  Quizz.belongsToMany(models.LibraryTool, {
+    through: QuizzLibraryTool,
+    foreignKey: 'quizzId',
+    otherKey: 'libraryToolId',
+  })
 
   return Quizz
 }
