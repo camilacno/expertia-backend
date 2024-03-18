@@ -60,6 +60,16 @@ export default (sequelize, models) => {
     foreignKey: 'quizzId',
     otherKey: 'libraryToolId',
   })
+  Quizz.belongsToMany(models.Theme, {
+    through: models.QuizzTheme,
+    foreignKey: 'quizzId',
+    otherKey: 'themeId',
+  })
+  Quizz.belongsToMany(models.Topic, {
+    through: models.QuizzTopic,
+    foreignKey: 'themeId',
+    otherKey: 'topicId',
+  })
 
   return Quizz
 }
