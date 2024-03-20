@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize'
 
 export default (sequelize, models) => {
-  const SpecializationArea = sequelize.define(
-    'SpecializationArea',
+  const Roadmap = sequelize.define(
+    'Roadmap',
     {
       id: {
         type: DataTypes.UUID,
@@ -13,12 +13,11 @@ export default (sequelize, models) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      label: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       description: {
         type: DataTypes.TEXT,
+      },
+      tooltip: {
+        type: DataTypes.STRING,
       },
     },
     {
@@ -26,13 +25,12 @@ export default (sequelize, models) => {
     }
   )
 
-  SpecializationArea.associate = () => {
-    SpecializationArea.belongsToMany(models.Theme, {
-      through: 'SpecializationAreasThemes',
-      foreignKey: 'specializationAreaId',
-      otherKey: 'themeId',
+  Roadmap.associate = () => {
+    Roadmap.hasMany(models.RoadmapTheme, {
+      foreignKey: 'roadmapId',
+      as: 'themes',
     })
   }
 
-  return SpecializationArea
+  return Roadmap
 }

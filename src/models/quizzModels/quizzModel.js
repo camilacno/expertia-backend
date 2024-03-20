@@ -21,10 +21,10 @@ export default (sequelize, models) => {
         allowNull: false,
         references: { model: 'Level', key: 'id' },
       },
-      specializationAreaId: {
+      roadmapId: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: { model: 'SpecializationArea', key: 'id' },
+        references: { model: 'Roamap', key: 'id' },
       },
       languages: { type: DataTypes.ARRAY(DataTypes.STRING) },
       frameworks: { type: DataTypes.ARRAY(DataTypes.STRING) },
@@ -37,9 +37,9 @@ export default (sequelize, models) => {
 
   Quizz.belongsTo(models.User, { as: 'owner', foreignKey: 'ownerId' })
   Quizz.belongsTo(models.Level, { as: 'level', foreignKey: 'levelId' })
-  Quizz.belongsTo(models.SpecializationArea, {
-    as: 'specializationArea',
-    foreignKey: 'specializationAreaId',
+  Quizz.belongsTo(models.Roadmap, {
+    as: 'roadmap',
+    foreignKey: 'roadmapId',
   })
   Quizz.belongsToMany(models.Question, {
     through: 'QuizzQuestions',
