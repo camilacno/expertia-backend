@@ -26,9 +26,9 @@ export default (sequelize, models) => {
         allowNull: false,
         references: { model: 'Roamap', key: 'id' },
       },
-      languages: { type: DataTypes.ARRAY(DataTypes.STRING) },
-      frameworks: { type: DataTypes.ARRAY(DataTypes.STRING) },
-      libsAndTools: { type: DataTypes.ARRAY(DataTypes.STRING) },
+      libsAndTools: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+      },
     },
     {
       timestamps: true,
@@ -40,6 +40,10 @@ export default (sequelize, models) => {
   Quizz.belongsTo(models.Roadmap, {
     as: 'roadmap',
     foreignKey: 'roadmapId',
+  })
+  Quizz.hasMany(models.AISuggestedTheme, {
+    foreignKey: 'quizzId',
+    as: 'aiSuggestedThemes',
   })
   Quizz.belongsToMany(models.Question, {
     through: 'QuizzQuestions',
@@ -60,16 +64,6 @@ export default (sequelize, models) => {
     through: QuizzLibraryTool,
     foreignKey: 'quizzId',
     otherKey: 'libraryToolId',
-  })
-  Quizz.belongsToMany(models.Theme, {
-    through: models.QuizzTheme,
-    foreignKey: 'quizzId',
-    otherKey: 'themeId',
-  })
-  Quizz.belongsToMany(models.Topic, {
-    through: models.QuizzTopic,
-    foreignKey: 'themeId',
-    otherKey: 'topicId',
   })
 
   return Quizz
